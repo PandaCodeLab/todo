@@ -1,10 +1,10 @@
 <template>
-  <div>Edit</div>
+  <div>Создание заметки</div>
 </template>
 
 <script>
 export default {
-  name: 'TodoEdit',
+  name: 'TodoCreate',
 }
 </script>
 
