@@ -1,24 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TodoList from '../views/TodoList'
+import NoteList from '../views/NoteList'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'TodoList',
-    component: TodoList
+    name: 'NoteList',
+    component: NoteList
   },
   {
     path: '/create',
-    name: 'TodoCreate',
-    component: () => import(/* webpackChunkName: "TodoEdit" */ '../views/TodoCreate')
+    name: 'NoteCreate',
+    component: () => import(/* webpackChunkName: "NoteEdit" */ '../views/NoteCreate')
   },
   {
     path: '/edit/:id',
-    name: 'TodoEdit',
-    component: () => import(/* webpackChunkName: "TodoEdit" */ '../views/TodoEdit')
+    name: 'NoteEdit',
+    component: () => import(/* webpackChunkName: "NoteEdit" */ '../views/NoteEdit')
   }
 ]
 

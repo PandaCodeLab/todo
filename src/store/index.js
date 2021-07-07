@@ -11,20 +11,20 @@ export default new Vuex.Store({
         title: 'Заголовок 1',
         todos: [
           {
-            id: 1,
+            id: 0,
             text: 'Сделать 1',
             checked: false
           },
           {
-            id: 2,
+            id: 1,
             text: 'Сделать 2',
             checked: false
           },
           {
-            id: 3,
+            id: 2,
             text: 'Сделать 3',
             checked: false
-          },
+          }
         ]
       },
       {
@@ -32,28 +32,55 @@ export default new Vuex.Store({
         title: 'Заголовок 2',
         todos: [
           {
-            id: 1,
+            id: 0,
             text: 'Сделать 1',
             checked: false
           },
           {
-            id: 2,
+            id: 1,
             text: 'Сделать 2',
             checked: false
           },
           {
-            id: 3,
+            id: 2,
             text: 'Сделать 3',
             checked: false
-          },
+          }
         ]
-      },
+      }
     ]
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    CREATE_NOTE: (state, note) => {
+      state.notes.push(note)
+    },
+    UPDATE_NOTE: (state, note) => {
+      const index = state.notes.findIndex(n => n.id === note.id)
+      state.notes[index] = {
+        ...note
+      }
+    },
+    DELETE_NOTE: (state, noteId) => {
+      state.notes = state.notes.filter(n => n.id !== noteId)
+    }
+  },
+  actions: {
+    createNote: ({ commit }, note) => commit('CREATE_NOTE', note),
+    updateNote: ({ commit }, note) => commit('UPDATE_NOTE', note),
+    deleteNote: ({ commit }, noteId) => commit('DELETE_NOTE', noteId)
+  },
   getters: {
-    findNoteById: (state) => id => state.notes.find(n => n.id === id),
+    findNoteById: state => id => state.notes.find(n => n.id === id),
+    getNoteMaxId: state => {
+      if (state.notes.length > 0) {
+        const item = state.notes.reduce((prev, current) =>
+          +prev.id > +current.id ? prev : current
+        )
+        return item.id + 1
+      } else {
+        return 0
+      }
+    }
   },
   modules: {}
 })

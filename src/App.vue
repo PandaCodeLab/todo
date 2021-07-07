@@ -2,6 +2,7 @@
   <div class="container">
     <Navbar />
     <router-view />
+    <v-dialog />
   </div>
 </template>
 
