@@ -6,9 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {},
-  mutations: {
-
-  },
+  mutations: {},
   actions: {
     async fetchNotes({ commit }) {
       try {
@@ -28,20 +26,27 @@ export default new Vuex.Store({
 
     async fetchNoteById({ commit }, id) {
       try {
-        const note =
-          (
-            await firebase
-              .database()
-              .ref(`/notes`)
-              .child(id)
-              .once('value')
-          ).val() || {}
+        const note = (
+          await firebase
+            .database()
+            .ref(`/notes`)
+            .child(id)
+            .once('value')
+        ).val() || { notFound: true }
 
-        if(note.title){
+        if (!note.todos && !note.notFound) {
+          return { ...note, todos: [], id }
+        } else if (note.notFound) {
+          return { todos: [] }
+        } else {
           return { ...note, id }
-        }else{
-          return { ...note }
         }
+
+        /*         if(note.title && !note.todos){
+          return { ...note, id, todos: [] }
+        }else{
+          return { ...note, id }
+        } */
       } catch (error) {
         throw error
       }
@@ -54,7 +59,7 @@ export default new Vuex.Store({
           .ref(`/notes`)
           .push(note)
 
-        return {...note}
+        return { ...note }
       } catch (error) {
         throw error
       }
@@ -84,8 +89,6 @@ export default new Vuex.Store({
       }
     }
   },
-  getters: {
-
-  },
+  getters: {},
   modules: {}
 })

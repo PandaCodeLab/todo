@@ -6,12 +6,12 @@
 
       <NoteEditItem :note="note" />
 
-      <div v-if="isEdit">
+      <div class="NoteEdit-options" v-if="isEdit">
         <button @click="updateNoteLocal" :disabled="!stateChanged">Сохранить изменения</button>
         <button @click="editCancelModal">Отменить редактирование</button>
         <button @click="deleteNoteModal">Удалить заметку</button>
       </div>
-      <div v-else>
+      <div class="NoteEdit-options" v-else>
         <button @click="createNoteLocal" :disabled="!stateChanged">Сохранить заметку</button>
       </div>
     </div>
@@ -39,20 +39,20 @@ export default {
         return true
       }
     },
-    isTitle() {
+    isTitleEmpty() {
       return this.note.title.length > 0
     }
   },
   methods: {
     ...mapActions(['updateNote', 'deleteNote', 'createNote']),
     createNoteLocal() {
-      if (this.isTitle) {
+      if (this.isTitleEmpty) {
         this.createNote(this.note)
         this.$router.push('/')
       }
     },
     updateNoteLocal() {
-      if (this.isTitle) {
+      if (this.isTitleEmpty) {
         this.updateNote(this.note)
         this.stateChanged = false
       }
@@ -115,9 +115,8 @@ export default {
   async mounted() {
     if (this.$route.name !== 'NoteCreate') {
       this.note = await this.$store.dispatch('fetchNoteById', this.$route.params.id)
-      this.note.todos = []
+      console.log(this.note);
     }
-    console.log(this.note)
   },
   components: {
     NoteEditItem
@@ -126,7 +125,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.checked {
-  text-decoration: line-through;
+.NoteEdit-options{
+  button{
+    font-size: 2rem;
+    margin: 2rem 2rem 0 0;
+    cursor: pointer;
+  }
 }
 </style>

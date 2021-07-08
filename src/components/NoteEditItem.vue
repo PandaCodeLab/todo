@@ -1,15 +1,32 @@
 <template>
-  <div>
-    <input type="text" v-model="note.title" />
-    <div v-if="note.todos.length">
-      <div v-for="todo in note.todos" :key="todo.id" :class="{ checked: todo.checked === true }">
+  <div class="NoteEdit">
+    <div class="NoteEdit__title">
+      <span>Заголовок: </span>
+      <input type="text" v-model="note.title" :class="{ invalid: !note.title }" />
+    </div>
+
+    <div class="TodoList">
+      <div
+        class="TodoItem"
+        v-for="todo in note.todos"
+        :key="todo.id"
+        :class="{ checked: todo.checked === true }"
+      >
         <input type="checkbox" v-model="todo.checked" />
         <input :disabled="todo.checked" type="text" v-model="todo.text" />
-        <button @click.prevent="deleteTodo(todo.id)">delete</button>
+        <button @click.prevent="deleteTodo(todo.id)">❌</button>
       </div>
     </div>
-    <div v-else>Заполните данные о задачах</div>
-    <input type="text" @keyup.enter="addTodo" v-model="newTodo.text" />
+
+    <div class="addTodo">
+      <input
+        placeholder="Добавьте задачу"
+        type="text"
+        @keyup.enter="addTodo"
+        v-model="newTodo.text"
+      />
+      <button :disabled="!newTodo.text" @click="addTodo">Добавить</button>
+    </div>
   </div>
 </template>
 
@@ -48,11 +65,38 @@ export default {
         })
         this.newTodo.text = ''
       }
-
     },
     deleteTodo(id) {
       this.note.todos = this.note.todos.filter(todo => todo.id !== id)
     }
-  },
+  }
 }
 </script>
+
+<style lang="scss">
+.NoteEdit {
+  &__title{
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+  }
+  input {
+    font-size: 2.5rem;
+    margin: 10px;
+  }
+}
+
+.TodoItem {
+  display: flex;
+  align-items: center;
+}
+
+.addTodo{
+  display: flex;
+  align-items: center;
+}
+.invalid{
+  border: 2px solid #dc3545;
+  position: relative;
+}
+</style>
