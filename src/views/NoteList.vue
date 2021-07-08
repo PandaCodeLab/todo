@@ -3,7 +3,12 @@
     <div class="NoteItem" v-for="note in notes" :key="note.id" @click="editNote(note.id)">
       <div class="NoteItem__title">{{ note.title }}</div>
       <div class="TodoList">
-        <div :class="{ checked: todo.checked === true }" class="TodoListItem" v-for="todo in note.todos" :key="todo.id">
+        <div
+          :class="{ checked: todo.checked === true }"
+          class="TodoListItem"
+          v-for="todo in note.todos.slice(0, 3)"
+          :key="todo.id"
+        >
           <input type="checkbox" disabled class="TodoListItem__checkbox" v-model="todo.checked" />
           <div class="TodoListItem__text">{{ todo.text }}</div>
         </div>
@@ -23,6 +28,11 @@ export default {
   data() {
     return {
       notes: []
+    }
+  },
+  computed: {
+    todosLimited() {
+      return this.notes.todos.slice(0, 3)
     }
   },
   methods: {
@@ -66,7 +76,7 @@ export default {
   flex-wrap: wrap;
 }
 
-.NoteItem{
+.NoteItem {
   padding: 2rem;
   border-radius: 25px;
   cursor: pointer;
@@ -77,17 +87,17 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 4rem;
-  &__delete{
+  &__delete {
     margin-top: auto;
     cursor: pointer;
   }
 }
 
-.NoteItem:hover{
+.NoteItem:hover {
   box-shadow: 0 0 25px #000;
 }
 
-.TodoList{
+.TodoList {
   margin: 1.5rem 0;
 }
 
