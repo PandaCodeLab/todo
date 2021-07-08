@@ -42,11 +42,7 @@ export default new Vuex.Store({
           return { ...note, id }
         }
 
-        /*         if(note.title && !note.todos){
-          return { ...note, id, todos: [] }
-        }else{
-          return { ...note, id }
-        } */
+
       } catch (error) {
         throw error
       }
