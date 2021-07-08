@@ -6,7 +6,7 @@
         <div
           :class="{ checked: todo.checked === true }"
           class="TodoListItem"
-          v-for="todo in note.todos.slice(0, 3)"
+          v-for="todo in note.todos"
           :key="todo.id"
         >
           <input type="checkbox" disabled class="TodoListItem__checkbox" v-model="todo.checked" />
