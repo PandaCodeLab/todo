@@ -11,9 +11,9 @@ const routes = [
     component: NoteList
   },
   {
-    path: '/create',
+    path: '/create/',
     name: 'NoteCreate',
-    component: () => import(/* webpackChunkName: "NoteEdit" */ '../views/NoteCreate')
+    component: () => import(/* webpackChunkName: "NoteEdit" */ '../views/NoteEdit')
   },
   {
     path: '/edit/:id',

@@ -1,9 +1,10 @@
 <template>
   <div class="NoteList" v-if="notes.length">
+
     <div class="NoteItem" v-for="note in notes" :key="note.id" @click="editNote(note.id)">
       <div class="NoteItem__title">{{ note.title }}</div>
       <div class="TodoList">
-        <div class="TodoListItem" v-for="todo in note.todos.slice(0, 3)" :key="todo.id">
+        <div class="TodoListItem" v-for="todo in note.todos" :key="todo.id">
           <input type="checkbox" class="TodoListItem__checkbox" v-model="todo.checked" />
           <div class="TodoListItem__text">{{ todo.text }}</div>
         </div>
@@ -15,24 +16,22 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
-    return {}
-  },
-  computed: {
-    ...mapState(['notes'])
+    return {
+      notes: []
+    }
   },
   methods: {
-    ...mapActions(['deleteNote']),
+    ...mapActions(['deleteNote', 'fetchNotes']),
     editNote(id) {
       this.$router.push(`/edit/${id}`)
     },
     deleteNoteModal(noteId) {
       this.$modal.show('dialog', {
         title: 'Удалить заметку?',
-        //text: 'Lorem ipsum dolor sit amet, ...',
         buttons: [
           {
             title: 'Нет',
@@ -44,6 +43,7 @@ export default {
             title: 'Да',
             handler: () => {
               this.deleteNote(noteId)
+              this.notes = this.notes.filter(n => n.id !== noteId)
               this.$modal.hide('dialog')
             }
           }
@@ -51,7 +51,9 @@ export default {
       })
     }
   },
-  mounted() {}
+  async mounted() {
+    this.notes = await this.$store.dispatch('fetchNotes')
+  }
 }
 </script>
 

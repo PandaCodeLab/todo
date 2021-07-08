@@ -7,18 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {},
   mutations: {
-    /*     CREATE_NOTE: (state, note) => {
-      state.notes.push(note)
-    },
-    UPDATE_NOTE: (state, note) => {
-      const index = state.notes.findIndex(n => n.id === note.id)
-      state.notes[index] = {
-        ...note
-      }
-    },
-    DELETE_NOTE: (state, noteId) => {
-      state.notes = state.notes.filter(n => n.id !== noteId)
-    } */
+
   },
   actions: {
     async fetchNotes({ commit }) {
@@ -48,7 +37,11 @@ export default new Vuex.Store({
               .once('value')
           ).val() || {}
 
-        return { ...note, id }
+        if(note.title){
+          return { ...note, id }
+        }else{
+          return { ...note }
+        }
       } catch (error) {
         throw error
       }
@@ -56,7 +49,7 @@ export default new Vuex.Store({
 
     async createNote({ commit }, note) {
       try {
-        const note = await firebase
+        await firebase
           .database()
           .ref(`/notes`)
           .push(note)
@@ -74,9 +67,8 @@ export default new Vuex.Store({
           .ref(`/notes`)
           .child(note.id)
           .update({ ...note })
-      } catch (e) {
-        commit('setError', e)
-        throw e
+      } catch (error) {
+        throw error
       }
     },
 
@@ -93,17 +85,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    /*     findNoteById: state => id => state.notes.find(n => n.id === id),
-    getNoteMaxId: state => {
-      if (state.notes.length > 0) {
-        const item = state.notes.reduce((prev, current) =>
-          +prev.id > +current.id ? prev : current
-        )
-        return item.id + 1
-      } else {
-        return 0
-      }
-    } */
+
   },
   modules: {}
 })
